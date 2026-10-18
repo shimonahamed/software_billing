@@ -10,13 +10,20 @@ return new class extends Migration
     {
         Schema::create('bill_information', function (Blueprint $table) {
             $table->id();
-            $table->string('bill_title')->nullable();
-            $table->string('bill_type')->nullable();
-            $table->decimal('amount', 12, 2)->default(0);
-            $table->date('bill_date')->nullable();
+            $table->unsignedTinyInteger('bill_type')->nullable()->comment('1=Monthly, 2=Yearly, 3=One-time');
+            $table->string('invoice_no', 255)->nullable();
+            $table->string('bill_month', 255)->nullable();
+            $table->date('generate_date')->nullable();
+            $table->date('billing_start_date')->nullable();
+            $table->date('billing_end_date')->nullable();
+            $table->decimal('amount', 12, 2)->default(0.00);
+            $table->decimal('paid_amount', 12, 2)->default(0.00);
+            $table->decimal('due_amount', 12, 2)->default(0.00);
+            $table->decimal('bill_amount', 12, 2)->default(0.00);
+            $table->decimal('due_bill_amount', 12, 2)->default(0.00);
+            $table->decimal('total_bill_amount', 12, 2)->default(0.00);
             $table->date('due_date')->nullable();
-            $table->tinyInteger('status')->default(0)
-                ->comment('0=Unpaid, 1=Partial, 2=Paid');
+            $table->unsignedTinyInteger('status')->default(0)->comment('0=Unpaid, 1=Partial, 2=Paid');
             $table->text('remarks')->nullable();
             $table->timestamps();
         });

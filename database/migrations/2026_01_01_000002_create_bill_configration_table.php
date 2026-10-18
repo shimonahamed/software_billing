@@ -8,19 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('bill_configration', function (Blueprint $table) {
+        Schema::create('bill_configuration', function (Blueprint $table) {
             $table->id();
-            $table->string('currency')->default('BDT');
-            $table->decimal('default_amount', 12, 2)->default(0);
-            $table->boolean('monthly_billing')->default(true);
-            $table->boolean('yearly_billing')->default(true);
-            $table->boolean('one_time_billing')->default(true);
+            $table->string('api_url', 500)->nullable();
+            $table->text('api_token')->nullable();
+            $table->unsignedInteger('fetch_interval')->default(60)
+                ->comment('API data fetch interval in minutes');
+            $table->timestamp('last_fetch_at')->nullable();
+            $table->unsignedTinyInteger('status')->default(1)
+                ->comment('0=Inactive, 1=Active');
+            $table->json('additional_config')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('bill_configration');
+        Schema::dropIfExists('bill_configuration');
     }
 };
