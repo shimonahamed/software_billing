@@ -1,7 +1,7 @@
 
 {
-  "name": "software-billing",
-  "description": "Private Laravel software billing package",
+  "name": "super-admin/software-billing",
+  "description": "Laravel software billing package",
   "type": "library",
   "license": "proprietary",
   "require": {
