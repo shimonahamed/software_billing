@@ -227,6 +227,7 @@ export default {
       lastFetchAt: null,
       fetchError: '',
       latestBill: null,
+      latestBillInfo: false,
       showConfiguration: false,
       dataLoaded: false,
       bills: [],
@@ -239,10 +240,6 @@ export default {
         status: 1,
       },
     };
-  },
-
-  mounted() {
-    this.loadData();
   },
 
   methods: {
@@ -318,6 +315,24 @@ export default {
     },
 
 
+    async loadBillInfo() {
+      if (this.loadingConfig) {
+        return;
+      }
+
+      this.loadingConfig = true;
+      this.error = '';
+
+      try {
+        const data = await this.apiRequest('get', '/software-billing/bill_information');
+        this.latestBill = data.latest_bill && typeof data.latest_bill === 'object' ? data.latest_bill : null;
+        this.dataLoaded = true;
+      } catch (error) {
+        this.error = error.message;
+      } finally {
+        this.loadingConfig = false;
+      }
+    },
     async loadData() {
       if (this.loadingConfig) {
         return;
@@ -455,6 +470,9 @@ export default {
       });
       return columns;
     },
+  },
+  mounted(){
+      this.loadBillInfo()
   },
 };
 </script>

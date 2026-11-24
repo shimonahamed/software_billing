@@ -15,6 +15,35 @@ use SoftwareBilling\Models\BillingConfiguration;
 
 class BillingConfigurationController extends Controller
 {
+    public function index()
+    {
+        $latestBill = BillInformation::query()
+            ->orderByDesc('billing_start_date')
+            ->orderByDesc('id')
+            ->first();
+
+        return response()->json([
+            'latest_bill' => $latestBill?->only([
+                'id',
+                'bill_type',
+                'bill_id',
+                'bill_month',
+                'generate_date',
+                'billing_start_date',
+                'billing_end_date',
+                'amount',
+                'paid_amount',
+                'due_amount',
+                'bill_amount',
+                'pre_due_bill_amount',
+                'total_due_bill_amount',
+                'total_bill_amount',
+                'due_date',
+                'status',
+                'remarks',
+            ]),
+        ]);
+    }
     public function show()
     {
         $config = BillingConfiguration::find(1);
